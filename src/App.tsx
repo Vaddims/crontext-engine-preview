@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useRef } from 'react';
+import { engineExec } from './engine-exec';
 
 function App() {
+  const ref = useRef<HTMLCanvasElement | null>(null);
+  const devref = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    if (!ref.current || !devref.current) {
+      return;
+    }
+
+    engineExec(ref.current, devref.current);
+  }, [ref.current]);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <canvas ref={ref} />
+      <canvas ref={devref} />
     </div>
   );
 }
